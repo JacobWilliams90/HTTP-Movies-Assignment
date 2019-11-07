@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import styled from "styled-components";
 
-const MovieUpdate = (props) => {
+const Form = styled.form`
+  margin: 0 auto;
+`;
+
+const MovieUpdate = props => {
   console.log(props);
   const [movie, setMovie] = useState(null);
 
@@ -16,27 +21,32 @@ const MovieUpdate = (props) => {
     fetchMovie(props.match.params.id);
   }, [props.match.params.id]);
 
-  const handleChange = e => setMovie({...movie, [e.target.name]: e.target.value});
+  const handleChange = e =>
+    setMovie({ ...movie, [e.target.name]: e.target.value });
 
   const handleStar = index => e => {
-    setMovie({...movie, stars: movie.stars.map((star, starIndex) => {
-      return starIndex === index ? e.target.value : star;
-    })});
+    setMovie({
+      ...movie,
+      stars: movie.stars.map((star, starIndex) => {
+        return starIndex === index ? e.target.value : star;
+      })
+    });
   };
 
   const handleSubmit = event => {
     event.preventDefault();
-    axios.put(`http://localhost:5000/api/movies/${movie.id}`, movie)
+    axios
+      .put(`http://localhost:5000/api/movies/${movie.id}`, movie)
       .then(res => {
         console.log(res);
-        props.history.push('/');
+        props.history.push("/");
       })
       .catch(err => console.log(err.response));
   };
 
   const addStar = event => {
     event.preventDefault();
-    setMovie({...movie, stars: [...movie.stars, ""]});
+    setMovie({ ...movie, stars: [...movie.stars, ""] });
   };
 
   if (!movie) {
@@ -44,32 +54,45 @@ const MovieUpdate = (props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="text"
-             name="title"
-             placeholder="Title"
-             value={movie.title}
-             onChange={handleChange} />
-      <input type="text"
-             name="director"
-             placeholder="Director"
-             value={movie.director}
-             onChange={handleChange} />
-      <input type="text"
-             name="metascore"
-             placeholder="Metascore"
-             value={movie.metascore}
-             onChange={handleChange} />
+    <Form onSubmit={handleSubmit} className="updateWrapper">
+      <input
+        type="text"
+        name="title"
+        placeholder="Title"
+        value={movie.title}
+        onChange={handleChange}
+        className="spacer"
+      />
+      <input
+        type="text"
+        name="director"
+        placeholder="Director"
+        value={movie.director}
+        onChange={handleChange} className='spacer'
+      />
+      <input
+        type="text"
+        name="metascore"
+        placeholder="Metascore"
+        value={movie.metascore}
+        onChange={handleChange}
+        className='spacer'
+      />
       {movie.stars.map((starName, index) => {
-        return <input type="text"
-                      placeholder="Star"
-                      value={starName}
-                      key={index}
-                      onChange={handleStar(index)} />;
+        return (
+          <input
+            type="text"
+            placeholder="Star"
+            value={starName}
+            key={index}
+            onChange={handleStar(index)}
+            className='spacer'
+          />
+        );
       })}
-      <button onClick={addStar}>Add Star</button>
-      <button type="submit">Update Movie</button>
-    </form>
+      <button onClick={addStar} className='spacer'>Add Star</button>
+      <button type="submit" className='spacer'>Update Movie</button>
+    </Form>
   );
 };
 

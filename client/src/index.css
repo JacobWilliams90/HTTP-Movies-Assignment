@@ -53,6 +53,23 @@ body {
   width: 75%;
   margin: 1rem auto;
 }
+
+.buttonWrapper {
+  display: flex;
+  justify-content: space-around;
+}
+
+.updateWrapper {
+  display:flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 10%;
+}
+
+.spacer {
+  margin: 2px 0;
+}
+
 .save-button {
   position: absolute;
   top: 25px;
